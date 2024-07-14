@@ -1,0 +1,17 @@
+POST http://localhost:4000/alumni/create_user
+Content-Type: application/json
+
+{
+    "Name":"krishna",
+    "username":"krishna",
+    "password":"krishna"
+}
+
+###
+DELETE  http://localhost:4000/alumni/delete_user/2
+
+###
+POST http://localhost:4000/alumni/login
+
+###
+GET http://localhost:4000/alumni/get_user/VNRVJIET
