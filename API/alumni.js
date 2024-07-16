@@ -3,56 +3,38 @@ const user = express.Router();
 const expressAsyncHandler = require("express-async-handler");
 const bcryptjs = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
-
-
-// Configure multer for file storage
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-
-    cb(null, "./catastrophe/src/components/signin/pics");
-  },
-  filename: function (req, file, cb) {
-    cb(null, Date.now() + path.extname(file.originalname));
-  }
-});
-
-const upload = multer({
-    storage: storage,
-    fileFilter: function(req,file,callback){
-        if(
-            file.mimetype == "image/png" ||
-            file.mimetype == "image/jpg" ||
-            file.mimetype == "image/jpeg"
-        ){callback(null,true)}
-        else{
-            console.log('only jpg, jpeg and png file supported')
-            callback(null,false)
-        }
-    },
-    limits:{
-        fileSize: 1024*1024*1
-    }
-  });
 
 // Use json middleware
 user.use(express.json());
 
-user.post("/create_user", upload.single('profilePhoto'), expressAsyncHandler(async (req, res) => {
+user.post("/create_user", expressAsyncHandler(async (req, res) => {
     try {
+        console.log("1111")
         let clg = req.app.get("clg");
+        console.log("Received request body:", req.body);
         let newUserObj = req.body;
+
+        if (!newUserObj || !newUserObj.password) {
+            console.log("Invalid request body:", newUserObj);
+            return res.status(400).send({ message: "Invalid request body" });
+        }
 
         // Check if username already exists
         let userDB = await clg.findOne({ username: newUserObj.username });
         if (userDB != null) {
             res.send({ message: "Username has already been taken" });
         } else {
+            try{
             // Hash password
             let hashedPassword = await bcryptjs.hash(newUserObj.password, 10);
             newUserObj.password = hashedPassword;
+            }
+            catch(error){
+                console.error('Error hashing password:', error);
+                return res.status(500).send({ message: "Error hashing password" });
+            }
 
             // Attach the profile photo filename
             if (req.file) {

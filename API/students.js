@@ -3,39 +3,13 @@ const student = express.Router();
 const expressAsyncHandler = require("express-async-handler");
 const bcryptjs = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
-
-// Configure multer for file storage
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, "./catastrophe/src/components/signin/pics");
-  },
-  filename: function (req, file, cb) {
-    cb(null, Date.now() + path.extname(file.originalname));
-  }
-});
-
-const upload = multer({
-  storage: storage,
-  fileFilter: function(req, file, callback) {
-    if (file.mimetype === "image/png" || file.mimetype === "image/jpg" || file.mimetype === "image/jpeg") {
-      callback(null, true);
-    } else {
-      console.log('only jpg, jpeg and png file supported');
-      callback(null, false);
-    }
-  },
-  limits: {
-    fileSize: 1024 * 1024 * 1
-  }
-});
 
 // Use json middleware
 student.use(express.json());
 
-student.post("/create_user", upload.single('profilePhoto'), expressAsyncHandler(async (req, res) => {
+student.post("/create_user", expressAsyncHandler(async (req, res) => {
   try {
     let studentsCollection = req.app.get("studentCollection");
     let newUserObj = req.body;
