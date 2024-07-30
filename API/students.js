@@ -83,7 +83,7 @@ student.get("/get_userdetails/:id", expressAsyncHandler(async (request, response
 }));
 
 // Update details
-user.put("/update_user/:id", expressAsyncHandler(async (request, response) => {
+student.put("/update_user/:id", expressAsyncHandler(async (request, response) => {
   let studentsCollection = request.app.get("studentCollection");
   let userId = request.params.id; // This should be the username or unique identifier
   let details = request.body; // The details to be updated should be sent in the request body

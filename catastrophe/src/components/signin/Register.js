@@ -8,7 +8,7 @@ import { v4 } from 'uuid';
 
 function Register() {
     const { register, handleSubmit, formState: { errors } } = useForm();
-    const [ setImageUrl] = useState(null);
+    const [imageUrl,setImageUrl] = useState(null);
     const [userType, setUserType] = useState('alumni');
     const navigate = useNavigate();
     const onSubmit = async (formData) => {
@@ -28,7 +28,6 @@ function Register() {
         data[key] = formData[key];
                 }
         }
-
 
             const url = userType === 'alumni' ? 'http://localhost:4000/alumni/create_user' : 'http://localhost:4000/students/create_user';
 
