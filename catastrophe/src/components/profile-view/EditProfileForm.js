@@ -1,12 +1,12 @@
-import React, { useEffect } from 'react';
+import React, { useContext,useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-
+import { autheticator } from '../context/Usercontext';
 function EditProfileForm({ userdata, setIsEditing }) {
   const { register, handleSubmit, setValue, formState: { errors } } = useForm();
   const navigate = useNavigate();
-
+  const {uType}=useContext(autheticator);
   useEffect(() => {
     // Set default values for the form fields
     setValue('name', userdata.name);
@@ -98,7 +98,7 @@ function EditProfileForm({ userdata, setIsEditing }) {
                 </div>
               </div>
               <div className="col-md-4">
-                {userdata.userType !== 'student' ? (
+                {uType === 'alumni' ? (
                   <>
                     <div className="form-group">
                       <label htmlFor="LinkedinUrl">LinkedIn Profile URL:</label>
