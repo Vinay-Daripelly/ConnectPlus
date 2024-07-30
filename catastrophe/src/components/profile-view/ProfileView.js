@@ -1,6 +1,6 @@
 
 import React, { useContext, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation} from 'react-router-dom';
 import EditProfileForm from './EditProfileForm';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { autheticator } from '../context/Usercontext';
@@ -9,7 +9,6 @@ function ProfileView() {
   const { userdata} = state || {};
   console.log("info",userdata)
   const [isEditing, setIsEditing] = useState(false);
-  const navigate = useNavigate();
 const {uType}=useContext(autheticator);
 const{uData}=useContext(autheticator)
   const handleEditClick = () => {

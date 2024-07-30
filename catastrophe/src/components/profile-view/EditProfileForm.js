@@ -23,7 +23,7 @@ function EditProfileForm({ userdata, setIsEditing }) {
 
   const onSubmit = async (data) => {
     try {
-      const response = await axios.put(`http://localhost:4000/alumni/update_user/${userdata.username}`, data);
+      const response = await axios.put(`http://localhost:4000/${uType}/update_user/${userdata.username}`, data);
       console.log('User updated successfully:', response.data);
       setIsEditing(false);
       navigate('/profile', { state: { userdata: response.data } });

@@ -8,7 +8,7 @@ import { v4 } from 'uuid';
 
 function Register() {
     const { register, handleSubmit, formState: { errors } } = useForm();
-    const [imageUrl, setImageUrl] = useState(null);
+    const [ setImageUrl] = useState(null);
     const [userType, setUserType] = useState('alumni');
     const navigate = useNavigate();
     const onSubmit = async (formData) => {
