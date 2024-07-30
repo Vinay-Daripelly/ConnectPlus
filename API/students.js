@@ -71,7 +71,7 @@ student.get("/get_user/:clg_name", expressAsyncHandler(async (request, response)
   console.log(filtered_users);
 }));
 
-student.get("/get_userpic/:id", expressAsyncHandler(async (request, response) => {
+student.get("/get_userdetails/:id", expressAsyncHandler(async (request, response) => {
   let studentsCollection = request.app.get("studentCollection");
   let userId = request.params.id;
   let user = await studentsCollection.findOne({ username: userId });

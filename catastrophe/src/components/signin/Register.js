@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { storage } from 'C:\\Users\\DELL\\OneDrive\\Desktop\\Field-Project-main\\catastrophe\\src\\firebase.js';
+import { storage } from '../../firebase';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { v4 } from 'uuid';
 
@@ -11,57 +11,44 @@ function Register() {
     const [imageUrl, setImageUrl] = useState(null);
     const [userType, setUserType] = useState('alumni');
     const navigate = useNavigate();
-
     const onSubmit = async (formData) => {
-        console.log('Form submitted', formData); // Check if this is printed
         try {
           delete formData.confirmPassword;
             let imageUrl;
             if (formData.profilePhoto && formData.profilePhoto[0]) {
-                console.log('Profile photo found, starting upload'); // Check if this is printed
-                imageUrl = await uploadFile(formData.profilePhoto[0]);
-                console.log('Image uploaded, URL:', imageUrl); // Check if this is printed
+                console.log('Profile photo found, starting upload'); 
+                console.log('Image uploaded, URL:', imageUrl); 
+            }
+            const usernameCheckUrl = `http://localhost:4000/check_username/${formData.username}`;
+            const usernameCheckResponse = await axios.get(usernameCheckUrl);
+
+            if (usernameCheckResponse.data.exists) {
+                alert('Username is already taken. Please choose a different one.');
+                return;
             }
 
             const data = {};
             for (const key in formData) {
             if (key === "profilePhoto") {
-              data[key] = imageUrl; // Assign the imageUrl directly to the profilePhoto key
+              data[key] = imageUrl;
             } else if (userType === 'alumni' || (userType === 'student' && key !== 'areaOfExpertise' && key !== 'professionalBackground' && key !== 'LinkedinUrl')) {
-        // Assign the field if the user type is alumni, or if the field is not one of the alumni-specific fields for students
         data[key] = formData[key];
-    }
-}
+                }
+        }
 
-          //   const data = {
-          //     ...formData,
-          //     profilePhoto: imageUrl,
-          //     areaOfExpertise: userType === 'alumni' ? formData.areaOfExpertise : undefined,
-          //     professionalBackground: userType === 'alumni' ? formData.professionalBackground : undefined,
-          //     LinkedinUrl: userType === 'alumni' ? formData.LinkedinUrl : undefined,
-          //     passingYear: userType === 'student' ? formData.passingYear : undefined
-          // };
 
             const url = userType === 'alumni' ? 'http://localhost:4000/alumni/create_user' : 'http://localhost:4000/students/create_user';
 
             const response = await axios.post(url, data);
-            console.log('Response from server:', response); // Check if this is printed
-
             const userId = response.data.userId;
-            console.log('User ID:', userId); // Check if this is printed
-
-            const fetchUrl = userType === 'alumni' ? `http://localhost:4000/alumni/get_userpic/${userId}` : `http://localhost:4000/students/get_userpic/${userId}`;
+            const fetchUrl = userType === 'alumni' ? `http://localhost:4000/alumni/get_user/${userId}` : `http://localhost:4000/students/get_user/${userId}`;
 
             const userDataResponse = await axios.get(fetchUrl);
-            console.log('User data response:', userDataResponse); // Check if this is printed
-
             const imageUrlFromServer = userDataResponse.data.profilePhoto;
-            console.log('Image URL from server:', imageUrlFromServer); // Check if this is printed
             setImageUrl(imageUrlFromServer);
             alert('User created successfully');
-            //navigate('/login');
+            navigate('/login');
         } catch (error) {
-            console.error('Error creating user:', error); // Check if this is printed
             alert('Something went wrong in creating user');
         }
     };
@@ -101,7 +88,7 @@ function Register() {
 
                     <div className="form-group">
                         <label htmlFor="profilePhoto">Profile Photo:</label>
-                        <input type="file" id="profilePhoto" {...register('profilePhoto', { required: true })} className="form-control" />
+                        <input type="file"  accept=".jpg ,.jpeg "id="profilePhoto" {...register('profilePhoto', { required: true })} className="form-control" />
                         {errors.profilePhoto && <span className="error">Profile Photo is required</span>}
                     </div>
 
@@ -208,13 +195,12 @@ function Register() {
                     <button type="submit" className="col-2 m-3 btn btn-success">Submit</button>
                 </form>
                 <p className="mt-3">Already registered? <a href="/login">Click here for login</a></p>
-                {imageUrl && (
+                {/* {imageUrl && (
                     <div className="mt-3 text-center">
                         <h3>Uploaded Profile Photo:</h3>
-                        {/* Display the image if URL is available */}
                         {imageUrl && <img src={imageUrl} alt="Uploaded Profile" style={{ maxWidth: '100%', height: 'auto' }} />}
                     </div>
-                )}
+                )} */}
             </div>
         </div>
     );

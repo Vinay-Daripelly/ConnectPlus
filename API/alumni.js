@@ -85,7 +85,7 @@ user.get("/get_user/:clg_name", expressAsyncHandler(async (request, response) =>
 
 // In alumni.js or your relevant route file
 
-user.get("/get_userpic/:id", expressAsyncHandler(async (request, response) => {
+user.get("/get_userdetails/:id", expressAsyncHandler(async (request, response) => {
     let clg = request.app.get("clg");
     let userId = request.params.id;
     let user = await clg.findOne({ username: userId });

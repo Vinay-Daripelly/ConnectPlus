@@ -13,7 +13,7 @@ function AlumniProfile() {
     <div className="card mt-4 mx-auto" style={{ maxWidth: '400px' }}>
     <h1 className="mt-4 text-center">Profile</h1>
       <div className="card-body text-center">
-        <img src={graduated} className="card-img-top rounded-circle border-5-black" alt="Profile" style={{ width: '150px', height: '150px', objectFit: 'cover' }} />
+        <img src={userdata.profilePhoto} className="card-img-top rounded-circle border-5-black" alt="Profile" style={{ width: '150px', height: '150px', objectFit: 'cover' }} />
         <h5 className="card-title mt-3">{userdata.name}</h5>
         <p className="card-text">Username: {userdata.username}</p>
         <p className="card-text">College: {userdata.college}</p>

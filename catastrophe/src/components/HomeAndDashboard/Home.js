@@ -9,7 +9,7 @@ const HomePage = ({ userType }) => {
   const navigate = useNavigate();
   useEffect(() => {
     if (loginStatus) {
-      setLoginStatus(false)
+      // setLoginStatus(false)
     }
   })
 

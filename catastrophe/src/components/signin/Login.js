@@ -1,4 +1,4 @@
-import React, { useState,useContext } from 'react';
+import React, { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { autheticator } from '../context/Usercontext';
@@ -8,29 +8,36 @@ function LoginForm(props) {
   const [password, setPassword] = useState('');
   const [userType, setUserType] = useState('alumni');
   const [message, setMessage] = useState('');
-  const {loginStatus,setLoginStatus}=useContext(autheticator);
+  const { loginStatus, setLoginStatus } = useContext(autheticator);
+  const {userName,setUser}=useContext(autheticator);
+  const {uType,setUType}=useContext(autheticator);
 
   let navigate = useNavigate();
-console.log("login status value",loginStatus);
+  console.log("login status value", loginStatus);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       //userState to specify which path it should go
-      let userState=""
-      if (userType==="student"){
-        userState="students"
+      let userState = "";
+      if (userType === "student") {
+        userState = "students";
+        setUType("students");
+      } else {
+        userState = "alumni";
+        setUType("alumni")
       }
-      else{
-        userState="alumni"
-      }
-      console.log(userState)
-      
-      console.log(userType)
-      const response = await axios.post(`http://localhost:4000/${userState}/login`, { username, password });
+      console.log(userState);
+      console.log(userType);
+
+      const response = await axios.post(`http://localhost:4000/${uType}/login`, { username, password });
       if (response.data.message === 'Login success') {
         setMessage(response.data.message);
         setLoginStatus(true);
-        navigate('/dashboard');
+        setUser(username);
+        console.log("username:",userName)
+        console.log("login status:",loginStatus)
+        navigate('/dashboard', { state: { username, userState } });
       } else {
         setMessage(response.data.message);
       }
@@ -51,18 +58,18 @@ console.log("login status value",loginStatus);
           <form onSubmit={handleSubmit}>
             <div className="form-group">
               <label>User Type:</label>
-              <select value={userType} onChange={handleUserTypeChange} className="form-control">
+              <select value={userType} onChange={handleUserTypeChange} className="form-control" required>
                 <option value="alumni">Alumni</option>
                 <option value="student">Student</option>
               </select>
             </div>
             <div className="form-group">
               <label>Username:</label>
-              <input type="text" className="form-control" value={username} onChange={(e) => setUsername(e.target.value)} />
+              <input type="text" className="form-control" value={username} onChange={(e) => setUsername(e.target.value)} required />
             </div>
             <div className="form-group">
               <label>Password:</label>
-              <input type="password" className="form-control" value={password} onChange={(e) => setPassword(e.target.value)} />
+              <input type="password" className="form-control" value={password} onChange={(e) => setPassword(e.target.value)} required />
             </div>
             <button type="submit" className="btn btn-success btn-block mt-3">Login</button>
           </form>
