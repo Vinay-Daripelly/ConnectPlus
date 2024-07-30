@@ -82,4 +82,45 @@ student.get("/get_userdetails/:id", expressAsyncHandler(async (request, response
   }
 }));
 
+// Update details
+user.put("/update_user/:id", expressAsyncHandler(async (request, response) => {
+  let studentsCollection = request.app.get("studentCollection");
+  let userId = request.params.id; // This should be the username or unique identifier
+  let details = request.body; // The details to be updated should be sent in the request body
+
+  try {
+      // Construct the update object
+      let updateObj = {};
+      for (const key in details) {
+          if (details.hasOwnProperty(key) && key !== 'username') {
+              updateObj[key] = details[key];
+          }
+      }
+      console.log("updateobj=",updateObj);
+
+      try{
+          // Hash password
+          let hashedPassword = await bcryptjs.hash(updateObj.password, 10);
+          updateObj.password = hashedPassword;
+          }
+          catch(error){
+              console.error('Error hashing password:', error);
+              return res.status(500).send({ message: "Error hashing password" });
+          }
+
+      // Perform the update
+      let result = await studentsCollection.updateOne({ username: userId }, { $set: updateObj });
+
+      if (result.modifiedCount > 0) {
+          response.send({ message: "User details updated successfully" });
+      } else {
+          response.status(404).send({ message: "User not found or no changes made" });
+      }
+  } catch (error) {
+      console.error('Error updating user details:', error);
+      response.status(500).send({ message: "Internal Server Error" });
+  }
+}));
+
+
 module.exports = student;
