@@ -2,16 +2,16 @@ import React from 'react'
 import axios from 'axios';
 import UserList from '../UserAndList/UserList'
 import user from '../../images/user.jpeg'
-import { useNavigate,useLocation } from 'react-router-dom';
-import { useContext ,useState } from 'react';
+import { useNavigate} from 'react-router-dom';
+import { useContext } from 'react';
 import { autheticator } from '../context/Usercontext';
 function Dashboard() {
-  const {loginStatus,setLoginStatus}=useContext(autheticator);
+  const {setLoginStatus}=useContext(autheticator);
   const {userName,setUser}=useContext(autheticator);
   const {uType,setUType}=useContext(autheticator)
   const{uData,setUData}=useContext(autheticator);
   const navigate = useNavigate()
-  const location = useLocation()
+  // const location = useLocation()
   const handleProfileClick = async () => {
     try {
       const url = `http://localhost:4000/${uType}/get_userdetails/${userName}`;

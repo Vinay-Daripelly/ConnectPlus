@@ -17,16 +17,9 @@ function Register() {
             let imageUrl;
             if (formData.profilePhoto && formData.profilePhoto[0]) {
                 console.log('Profile photo found, starting upload'); 
+                imageUrl = await uploadFile(formData.profilePhoto[0]);
                 console.log('Image uploaded, URL:', imageUrl); 
             }
-            const usernameCheckUrl = `http://localhost:4000/check_username/${formData.username}`;
-            const usernameCheckResponse = await axios.get(usernameCheckUrl);
-
-            if (usernameCheckResponse.data.exists) {
-                alert('Username is already taken. Please choose a different one.');
-                return;
-            }
-
             const data = {};
             for (const key in formData) {
             if (key === "profilePhoto") {
@@ -49,7 +42,8 @@ function Register() {
             alert('User created successfully');
             navigate('/login');
         } catch (error) {
-            alert('Something went wrong in creating user');
+            alert('Something went wrong in creating user',error);
+            console.log(error)
         }
     };
 
