@@ -6,7 +6,7 @@ function Users(props) {
   const navigate = useNavigate();
 
   return (
-    <div className="card text-center mt-4 scale-1.2">
+    <div className="card text-center mt-4 scale-1.5">
       <div className="card-body h-50">
         <h2 className="text-success" style={{ fontFamily: "san-serif" }}><i>{userdata.name}</i></h2>
         <p className='text-primary'>Username: {userdata.username}</p>

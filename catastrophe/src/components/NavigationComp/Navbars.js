@@ -4,8 +4,7 @@ import './Navigationcomp.css';
 import { autheticator } from '../context/Usercontext';
 import { useContext } from 'react';
 function Navbars() {
-  const { loginStatus } = useContext(autheticator)
-
+  const {loginStatus,setLoginStatus}=useContext(autheticator);
   return (
     <div className="d-flex justify-content-between align-items-center">
       <li className="nav-item" type="none">
@@ -29,9 +28,6 @@ function Navbars() {
             <>
               <li className="nav-item ml-auto">
                 <NavLink className="nav-link" to="dashboard">Dashboard</NavLink>
-              </li>
-              <li className="nav-item">
-                <NavLink className="nav-link" to="/">Logout</NavLink>
               </li>
             </>
         }
