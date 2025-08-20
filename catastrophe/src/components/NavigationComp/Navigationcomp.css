@@ -1,7 +1,59 @@
-.active {
+/* .active {
 
     color: darkgreen!important;
     font-size: 1.3rem;
     background: dark-green;
     border-outline: 50px;
+} */
+
+
+
+/* Navigationcomp.css */
+
+/* Reset */
+.nav {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  gap: 1.5rem;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+}
+
+.nav-link {
+  text-decoration: none;
+  color: #333;
+  font-size: 1.1rem;
+  font-weight: 500;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  transition: all 0.3s ease-in-out;
+}
+
+/* Hover effect */
+.nav-link:hover {
+  color: #0a7c0a;
+  background: rgba(0, 128, 0, 0.1);
+}
+
+/* Active link styling */
+.active {
+  color: #fff !important;
+  font-size: 1.2rem;
+  background: #006400;  /* fixed 'dark-green' invalid CSS */
+  border-radius: 8px;
+  padding: 0.5rem 1rem;
+  box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+/* Title styling */
+h2 {
+  margin: 0;
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: #006400;
 }
